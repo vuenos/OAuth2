@@ -1,12 +1,15 @@
 import { generateCodeVerifier, generateCodeChallenge } from '../utils/pkce.ts';
 
-const clientId =
-    '791442778641-col33dab8tme8b35udmk0a9o3hetskol.apps.googleusercontent.com';
+const clientId = import.meta.env.VITE_APP_GOOGLE_CLIENT;
 const redirectUri = 'http://localhost:3000/api/auth/callback/google';
 const scope = 'openid email profile';
 
 function Login() {
     const handleLogin = async () => {
+        if (!clientId) {
+            throw new Error('Missing Google client ID');
+        }
+
         const codeVerifier = await generateCodeVerifier();
         const codeChallenge = await generateCodeChallenge(codeVerifier);
 

@@ -5,6 +5,8 @@ export default function AuthCallback() {
 
     useEffect(() => {
         const fetchTokens = async () => {
+            const GOOGLE_CLIENT = import.meta.env.VITE_APP_GOOGLE_CLIENT;
+            const GOOGLE_SECRET = import.meta.env.VITE_APP_GOOGLE_SECRET;
             const params = new URLSearchParams(window.location.search);
             const code = params.get('code');
             const codeVerifier = sessionStorage.getItem('code_verifier');
@@ -14,11 +16,14 @@ export default function AuthCallback() {
                 return;
             }
 
+            if (!GOOGLE_CLIENT || !GOOGLE_SECRET) {
+                throw new Error('Missing GOOGLE_CLIENT or GOOGLE_SECRET');
+            }
+
             const data = {
                 code,
-                client_id:
-                    '791442778641-col33dab8tme8b35udmk0a9o3hetskol.apps.googleusercontent.com',
-                client_secret: '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',
+                client_id: GOOGLE_CLIENT,
+                client_secret: GOOGLE_SECRET,
                 redirect_uri: 'http://localhost:3000/api/auth/callback/google',
                 grant_type: 'authorization_code',
                 code_verifier: codeVerifier,
@@ -36,7 +41,8 @@ export default function AuthCallback() {
             );
 
             const tokenJson = await tokenRes.json();
-            const { id_token } = tokenJson;
+            console.log('tokenJson:', tokenJson);
+            const { id_token } = tokenJson.id_token;
 
             //
             const payload = JSON.parse(atob(id_token.split('.')[1]));
