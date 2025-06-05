@@ -42,7 +42,7 @@ export default function AuthCallback() {
 
             const tokenJson = await tokenRes.json();
             console.log('tokenJson:', tokenJson);
-            const { id_token } = tokenJson.id_token;
+            const { id_token } = tokenJson;
 
             //
             const payload = JSON.parse(atob(id_token.split('.')[1]));
