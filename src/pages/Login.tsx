@@ -3,6 +3,8 @@ import { generateCodeVerifier, generateCodeChallenge } from '../utils/pkce.ts';
 const clientId = import.meta.env.VITE_APP_GOOGLE_CLIENT;
 const redirectUri = 'http://localhost:3000/api/auth/callback/google';
 const scope = 'openid email profile';
+const kakaoClientId = import.meta.env.VITE_APP_KAKAO_CLIENT;
+const kakaoRedirectUri = 'http://localhost:3000/api/auth/callback/kakao';
 
 function Login() {
     const handleLogin = async () => {
@@ -26,7 +28,29 @@ function Login() {
         window.location.href = authUrl.toString();
     };
 
-    return <button onClick={handleLogin}>Login with Google</button>;
+    const handleKakaoLogin = async () => {
+        if (!kakaoClientId) {
+            throw new Error('Missing Kakao client ID');
+        }
+
+        const kakaoAuthUrl = new URL('https://kauth.kakao.com/oauth/authorize');
+        kakaoAuthUrl.searchParams.set('client_id', kakaoClientId);
+        kakaoAuthUrl.searchParams.set('redirect_uri', kakaoRedirectUri);
+        kakaoAuthUrl.searchParams.set('response_type', 'code');
+        kakaoAuthUrl.searchParams.set(
+            'scope',
+            'profile_nickname profile_image account_email',
+        );
+
+        window.location.href = kakaoAuthUrl.toString();
+    };
+
+    return (
+        <>
+            <button onClick={handleLogin}>Login with Google</button>
+            <button onClick={handleKakaoLogin}>Login with Kakao</button>
+        </>
+    );
 }
 
 export default Login;

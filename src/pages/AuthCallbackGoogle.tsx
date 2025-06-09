@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function AuthCallback() {
+export default function AuthCallbackGoogle() {
     const [userInfo, setUserInfo] = useState<any>(null);
 
     useEffect(() => {

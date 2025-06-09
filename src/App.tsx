@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login.tsx';
-import AuthCallback from './pages/AuthCallback.tsx';
+import AuthCallbackGoogle from './pages/AuthCallbackGoogle.tsx';
 import './index.css';
 import './App.css';
 
@@ -11,7 +11,7 @@ function App() {
                 <Route path="/" element={<Login />} />
                 <Route
                     path="/api/auth/callback/google"
-                    element={<AuthCallback />}
+                    element={<AuthCallbackGoogle />}
                 />
             </Routes>
         </BrowserRouter>
